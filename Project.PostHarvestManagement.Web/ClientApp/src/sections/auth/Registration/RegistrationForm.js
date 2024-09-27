@@ -146,7 +146,7 @@ export default function RegistrationForm() {
                     pauseOnHover
                 />
                 <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
-                    <Stack direction={{ xs: 'column', sm: 'row' }} style={{ marginTop: '25px' }} spacing={3}>
+                    {/* <Stack direction={{ xs: 'column', sm: 'row' }} style={{ marginTop: '25px' }} spacing={3}>
                         <TextField
                             fullWidth
                             size="small"
@@ -172,7 +172,7 @@ export default function RegistrationForm() {
                             <MenuItem value={2}> Donor</MenuItem>
                             <MenuItem value={3}> Seeker</MenuItem>
                         </TextField>
-                    </Stack>
+                    </Stack> */}
                     <Stack direction={{ xs: 'column', sm: 'row' }} style={{ marginTop: '25px' }} spacing={3}>
                         <TextField
                             fullWidth
@@ -209,7 +209,7 @@ export default function RegistrationForm() {
                             error={Boolean(touched.dob && errors.dob)}
                             helperText={touched.dob && errors.dob}
                         />
-                        {formik.values.userTypeID != 1 ?
+                        {/* {formik.values.userTypeID != 1 ?
                             <TextField
                                 select
                                 fullWidth
@@ -223,7 +223,7 @@ export default function RegistrationForm() {
                             >
                                 <MenuItem key={0} value={0}> Select Donation Type</MenuItem>
                                 {generateDonationTypeDropDownMenu(donationTypes)}
-                            </TextField> : null}
+                            </TextField> : null} */}
                     </Stack>
                     <Stack direction={{ xs: 'column', sm: 'row' }} style={{ marginTop: '25px', marginBottom: '25px' }} spacing={3}>
                         <TextField
@@ -303,7 +303,7 @@ export default function RegistrationForm() {
                             helperText={touched.email && errors.email}
                         />
                     </Stack>
-                    {formik.values.userTypeID != 1 ?
+                    {/* {formik.values.userTypeID != 1 ?
                         <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
                             <Card sx={{ maxWidth: 200 }}>
                                 <Card hidden={ImageHide}>
@@ -327,7 +327,7 @@ export default function RegistrationForm() {
                                     maxFileSize={5242880}
                                 />
                             </Card>
-                        </Stack> : null}
+                        </Stack> : null} */}
                     <LoadingButton fullWidth size="large" type="submit" variant="contained">
                         Register
                     </LoadingButton>

@@ -59,7 +59,7 @@ export default function Registration() {
                 {mdUp && (
                     <StyledSection>
                         <Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
-                            Be A Part Of The Kind Society
+                            Be A Part Of Sustainable Harvest Management
                         </Typography>
                         <img src="/assets/illustrations/donation-money-vector-flat-illustration.jpg" alt="login" />
                     </StyledSection>
@@ -68,7 +68,7 @@ export default function Registration() {
                 <Container maxWidth="sm">
                     <StyledContent>
                         <Typography variant="h4" gutterBottom>
-                            Sign up to GrateFul Donors
+                            Sign up to Agri Gen
                         </Typography>
 
                         <Typography variant="body2" sx={{ mb: 5 }}>
