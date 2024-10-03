@@ -34,22 +34,22 @@ function DashboardNav() {
       icon: icon('ic_analytics'),
     },
     {
-      title: 'users',
+      title: 'farmers',
       path: '/dashboard/user',
       icon: icon('ic_user'),
     },
     {
-      title: 'blog',
+      title: 'crops',
       path: '/dashboard/blog',
       icon: icon('ic_blog'),
     },
     {
-      title: 'Profile',
+      title: 'Whether',
       path: '/dashboard/profilePage',
       icon: icon('ic_usergroup'),
     },
     {
-      title: 'Donation Request',
+      title: 'Reports',
       path: '/dashboard/donationRequestAdd',
       icon: icon('ic_heart'),
     },
