@@ -1,208 +1,166 @@
-// import React, { useEffect, useState } from 'react';
-// import axios from 'axios';
-// import { makeStyles } from '@material-ui/core/styles';
-// import Avatar from '@material-ui/core/Avatar';
-// import Typography from '@material-ui/core/Typography';
-// import Grid from '@material-ui/core/Grid';
-// import Paper from '@material-ui/core/Paper';
-// import { Helmet } from 'react-helmet-async';
-// import Chip from '@mui/material/Chip';
-// import QRCode from 'react-qr-code';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import { makeStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
+import Avatar from '@material-ui/core/Avatar';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
 
-// const useStyles = makeStyles((theme) => ({
-//     root: {
-//         flexGrow: 1,
-//         padding: theme.spacing(3),
-//         marginTop: theme.spacing(3),
-//     },
-//     avatar: {
-//         width: theme.spacing(15),
-//         height: theme.spacing(15),
-//         margin: theme.spacing(1),
-//     },
-//     name: {
-//         fontWeight: 'bold',
-//         marginTop: theme.spacing(1),
-//         marginBottom: theme.spacing(1),
-//     },
-//     subtitle: {
-//         color: theme.palette.text.secondary,
-//         marginBottom: theme.spacing(1),
-//     },
-//     content: {
-//         marginTop: theme.spacing(3),
-//     },
-//     paper: {
-//         padding: theme.spacing(2),
-//         margin: 'auto',
-//     },
-// }));
+const useStyles = makeStyles((theme) => ({
+    root: {
+        flexGrow: 1,
+        padding: theme.spacing(3),
+        marginTop: theme.spacing(3),
+    },
+    avatar: {
+        width: theme.spacing(15),
+        height: theme.spacing(15),
+        margin: theme.spacing(1),
+    },
+    name: {
+        fontWeight: 'bold',
+        marginTop: theme.spacing(1),
+        marginBottom: theme.spacing(1),
+    },
+    subtitle: {
+        color: theme.palette.text.secondary,
+        marginBottom: theme.spacing(1),
+    },
+    content: {
+        marginTop: theme.spacing(3),
+    },
+    paper: {
+        padding: theme.spacing(2),
+        margin: 'auto',
+    },
+    inputField: {
+        marginBottom: theme.spacing(2),
+    },
+}));
 
-// export default function ProfilePage() {
-//     const classes = useStyles();
-//     const [userId, setUserId] = useState(null);
-//     const [DobDate, setDobDate] = useState(null);
-//     const [JoinedDate, setJoinedDate] = useState(null);
-//     const [userData, setUserData] = useState({
-//         userName: "",
-//         email: "",
-//         userType: 0
-//     });
-//     const [profileData, setProfileData] = useState([]);
-//     const [imageData, setImageData] = useState([]);
+export default function WeatherForecast() {
+    const classes = useStyles();
+    const [location, setLocation] = useState('Dambulla'); // Default location
+    const [weatherData, setWeatherData] = useState(null);
+    const [forecastData, setForecastData] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState('');
 
-//     useEffect(() => {
-//         const userIdFromStorage = localStorage.getItem('userId');
-//         setUserId(userIdFromStorage);
-//     }, []);
+    // Get your OpenWeatherMap API key and set it here
+    const apiKey = 'your_actual_openweathermap_api_key'; // Replace with your OpenWeatherMap API key
 
-//     useEffect(() => {
-//         if (userId != 0) {
-//             GetUserDetailsByUserID();
-//         }
+    // Function to fetch weather data
+    const fetchWeatherData = async (city) => {
+        try {
+            setLoading(true);
+            setError(''); // Clear any previous errors
 
-//     }, [userId]);
+            // Fetch current weather
+            const weatherResult = await axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`);
+            
+            // Fetch forecast data
+            const forecastResult = await axios.get(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&units=metric`);
 
-//     useEffect(() => {
-//         if (userData.userType != 0) {
-//             GetUserProfileDetailsByUserID();
-//             GetUserImageData();
-//         }
-//     }, [userData.userType]);
+            // Set the weather and forecast data
+            setWeatherData(weatherResult.data);
+            setForecastData(forecastResult.data.list.filter((_, index) => index % 8 === 0)); // Daily forecast
+            setLoading(false);
+        } catch (error) {
+            console.error('Error fetching weather data:', error);
+            setError('Failed to fetch weather data. Please check the location or try again later.');
+            setLoading(false);
+        }
+    };
 
-//     async function GetUserDetailsByUserID() {
-//         const result = await axios.get('https://localhost:7211/api/User/GetUserDetailsByUserID', {
-//             params: {
-//                 userId: userId
-//             }
-//         });
+    // Fetch the initial weather data for the default location on component mount
+    useEffect(() => {
+        fetchWeatherData(location);
+    }, []);
 
-//         setUserData({
-//             userName: result.data.data.userName,
-//             email: result.data.data.email,
-//             userType: result.data.data.userType
-//         });
-//     }
+    // Handle form submission for fetching weather data of a selected location
+    const handleFormSubmit = (e) => {
+        e.preventDefault();
+        if (location) {
+            fetchWeatherData(location);
+        }
+    };
 
-//     async function GetUserImageData() {
-//         if (userId !== 0) {
-//             const result = await axios.get('https://localhost:7211/api/User/GetUserImageByUserID', {
-//                 params: {
-//                     userId: userId
-//                 }
-//             });
+    return (
+        <div className={classes.root}>
+            {/* Input form for location selection */}
+            <form onSubmit={handleFormSubmit}>
+                <TextField
+                    label="Enter Your Location"
+                    variant="outlined"
+                    value={location}
+                    onChange={(e) => setLocation(e.target.value)}
+                    className={classes.inputField}
+                    fullWidth
+                />
+                <Button type="submit" variant="contained" color="primary" fullWidth>
+                    Click Get Weather Forecast
+                </Button>
+            </form>
 
-//             setImageData(result.data.data)
-//         }
-//     }
+            {/* Show loading message */}
+            {loading && (
+                <Typography variant="h6" align="center">
+                    Loading...
+                </Typography>
+            )}
 
-//     async function GetUserProfileDetailsByUserID() {
-//         let model = {
-//             userID: parseInt(userId),
-//             userType: userData.userType
-//         }
-//         const result = await axios.post('https://localhost:7211/api/Mobile/GetUserDetailsForProfile', model);
-//         setProfileData(result.data.data);
+            {/* Show error message if any */}
+            {error && (
+                <Typography variant="h6" color="error" align="center">
+                    {error}
+                </Typography>
+            )}
 
-//         DateFormat(result.data.data.dob, result.data.data.joinedDate);
-//         return;
-//     }
+            {/* Show weather and forecast data after loading */}
+            {!loading && !error && weatherData && (
+                <Grid container spacing={3}>
+                    {/* Current Weather Section */}
+                    <Grid item xs={12} md={4} align="center">
+                        <Avatar alt="Weather Icon" src={`http://openweathermap.org/img/w/${weatherData.weather[0].icon}.png`} className={classes.avatar} />
+                        <Typography variant="h5" component="h1" className={classes.name}>
+                            {weatherData.name}
+                        </Typography>
+                        <Typography variant="subtitle1" className={classes.subtitle}>
+                            {weatherData.weather[0].description}
+                        </Typography>
+                        <Typography variant="subtitle1" className={classes.subtitle}>
+                            {weatherData.main.temp}°C (Feels like {weatherData.main.feels_like}°C)
+                        </Typography>
+                        <Typography variant="subtitle1" className={classes.subtitle}>
+                            Wind: {weatherData.wind.speed} km/h | Humidity: {weatherData.main.humidity}%
+                        </Typography>
+                    </Grid>
 
-//     function DateFormat(dob, joinedDate) {
-//         const timestamp = dob;
-//         const dobdate = timestamp.split('T')[0];
-
-//         const timestamp1 = joinedDate;
-//         const joineddate = timestamp1.split('T')[0];
-
-//         setDobDate(dobdate);
-//         setJoinedDate(joineddate);
-//     }
-
-
-//     return (
-//         <div className={classes.root}>
-//             <Helmet>
-//                 <title> Profile | PostHarvestManagement </title>
-//             </Helmet>
-
-//             <Grid container spacing={3}>
-//                 <Grid item xs={12} md={4} align="center">
-//                     <Avatar
-//                         alt="Profile Picture"
-//                         src={`data:image/jpeg;base64, ${imageData.image}`}
-//                         className={classes.avatar}
-//                     />
-
-//                     <Typography variant="h5" component="h1" className={classes.name}>
-//                         {profileData.name}
-//                     </Typography>
-//                     <Typography variant="subtitle1" className={classes.subtitle}>
-//                         {profileData.userType}
-//                     </Typography>
-//                     <Typography variant="subtitle1" className={classes.subtitle}>
-//                         {profileData.verifyStatus == 2 ?
-//                             <Chip label="Verified" color="success" />
-//                             : <Chip label="Not Verified" color="error" />}
-//                     </Typography>
-//                     <br />
-//                     {profileData.verifyStatus == 1 ?
-//                         <Typography variant="subtitle1" className={classes.subtitle}>
-//                             <QRCode value={profileData.qrTagNumber} size={100} />
-//                         </Typography> : null}
-//                     {profileData.verifyStatus == 1 ?
-//                         <Typography variant="subtitle1" className={classes.subtitle}>
-//                             {"Scan the QR to Verify"}
-//                         </Typography> : null}
-//                 </Grid>
-//                 <Grid item xs={12} md={8}>
-//                     <Paper className={classes.paper}>
-//                         <Typography variant="h6" component="h2" align="center">
-//                             About Me
-//                         </Typography>
-//                         <div className={classes.content}>
-//                             {userData.userType == 2 ?
-//                                 <Typography variant="body1">
-//                                     I am a passionate supporter of various charitable causes and believe in making a positive impact on society.
-//                                     Giving back to the community and helping those in need has always been an integral part of my life.
-//                                     I have been actively involved in supporting different nonprofit organizations and initiatives that align with my values and interests
-//                                 </Typography> :
-//                                 <Typography variant="body1">
-//                                     I am {profileData.name} Who is seeking a donation from a kind donator to care my canser. It will cost over 100K.
-//                                     I couldnt abble to collect or find that amount of money. In this hurry. please help me with this
-//                                 </Typography>}
-//                         </div>
-//                     </Paper>
-//                     <Paper className={classes.paper}>
-//                         <Typography variant="h6" component="h2" align="center">
-//                             Personal Details
-//                         </Typography>
-//                         <div className={classes.content}>
-//                             <Typography variant="body1">
-//                                 Date of Birth - {DobDate} <br />
-//                                 Address       - {profileData.address}<br />
-//                                 Joined Date   - {JoinedDate}
-//                             </Typography>
-//                         </div>
-//                     </Paper>
-//                     <Paper className={classes.paper}>
-//                         {userData.userType == 2 ?
-//                             <Typography variant="h6" component="h2" align="center">
-//                                 Previous Donations
-//                             </Typography> : null}
-//                         {userData.userType == 2 ?
-//                             <div className={classes.content}>
-//                                 <Typography variant="body1">
-//                                     2020 - Blood Donation <br />
-//                                     2018 - Hair Donation <br />
-//                                     2017 - Money Donation
-//                                 </Typography>
-//                             </div> : null}
-//                     </Paper>
-//                 </Grid>
-//             </Grid>
-//         </div>
-//     );
-// };
-
+                    {/* Forecast Section */}
+                    <Grid item xs={12} md={8}>
+                        <Paper className={classes.paper}>
+                            <Typography variant="h6" component="h2" align="center">
+                                5 Day Forecast
+                            </Typography>
+                            <div className={classes.content}>
+                                {forecastData.map((day, index) => (
+                                    <div key={index} className="forecast-day">
+                                        <Typography variant="body1">
+                                            {new Date(day.dt_txt).toLocaleDateString()} - {day.weather[0].description}
+                                        </Typography>
+                                        <Typography variant="body1">
+                                            Temp: {day.main.temp}°C | Humidity: {day.main.humidity}%
+                                        </Typography>
+                                    </div>
+                                ))}
+                            </div>
+                        </Paper>
+                    </Grid>
+                </Grid>
+            )}
+        </div>
+    );
+}
 

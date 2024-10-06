@@ -35,22 +35,24 @@ export default function AboutPage() {
             <Container>
                 <Box py={4}>
                     <Typography variant="h4" gutterBottom>
-                        About Our Donation Website
+                    About Our Post-Harvest Management website
                     </Typography>
                     <Grid container spacing={2}>
                         <Grid item xs={12} md={6}>
                             <Typography variant="body1" paragraph>
-                                Welcome to our donation website! We are dedicated to making a positive impact on the world by providing a platform for individuals and organizations to contribute to various causes and make a difference in people's lives.
+                            Welcome to our Post-Harvest Management website! Our platform is designed to enhance post-harvest management in Sri Lanka through the integration of cutting-edge AI and data science technologies.
                             </Typography>
                             <Typography variant="body1" paragraph>
-                                Our mission is to connect generous donors with reputable charities and initiatives. We believe that every contribution counts, no matter how big or small, and together we can create a better future for those in need.
+                            Recognizing the challenges faced by farmers—such as inefficiencies in storage, transportation, and market access—our mission is to minimize post-harvest losses and increase agricultural sustainability. 
                             </Typography>
                             <Typography variant="body1" paragraph>
-                                Through our user-friendly platform, you can explore different causes, learn about their impact, and make secure donations online. We strive to ensure transparency and accountability in every step of the process, so you can trust that your donations are reaching the intended recipients.
+                            By leveraging AI-driven solutions, we optimize storage conditions, streamline supply chain processes, and provide data-driven insights to improve decision-making for farmers. Our goal is to empower the agricultural community, improve food security, and contribute to the sustainable development of Sri Lanka's agricultural sector.
                             </Typography>
                         </Grid>
                         <Grid item xs={12} md={6}>
                             <img src={process.env.PUBLIC_URL + "/assets/Logo.png"} alt="About" style={{ width: '100%', borderRadius: 4 }} />
+                            {/* <img src={process.env.PUBLIC_URL + "/assets/farming.jpg"} alt="Post-Harvest Management" style={{ width: '100%', borderRadius: 4 }} /> */}
+
                         </Grid>
                     </Grid>
                 </Box>
@@ -66,7 +68,7 @@ export default function AboutPage() {
                         <b>Email: PostHarvestManagement@gmail.com</b>
                     </Typography>
                     <Typography variant="body1">
-                        <b>Phone: 123-456-7890</b>
+                        <b>Phone: 066-2283122</b>
                     </Typography>
                 </Box>
 
