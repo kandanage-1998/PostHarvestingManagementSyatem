@@ -16,6 +16,8 @@ namespace Project.PostHarvestManagement.API.Extensions
             services.AddTransient<ISeekerService, SeekerService>();
             services.AddTransient<IMobileService, MobileService>();
             services.AddTransient<IDonationRequestService, DonationRequestService>();
+            services.AddTransient<ICollectionPointService, CollectionPointService>();
+            services.AddTransient<ICropRegistrationService, CropRegistrationService>();
 
             return services;
         }
