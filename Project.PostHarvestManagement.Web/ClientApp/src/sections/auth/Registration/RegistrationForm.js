@@ -169,8 +169,8 @@ export default function RegistrationForm() {
                         >
                             <MenuItem key={0} value={0}> Select User Type</MenuItem>
                             <MenuItem value={1}> Administrator</MenuItem>
-                            <MenuItem value={2}> Donor</MenuItem>
-                            <MenuItem value={3}> Seeker</MenuItem>
+                            <MenuItem value={2}> Farmer</MenuItem>
+                            <MenuItem value={3}> Sellar</MenuItem>
                         </TextField>
                     </Stack>
                     <Stack direction={{ xs: 'column', sm: 'row' }} style={{ marginTop: '25px' }} spacing={3}>
@@ -209,7 +209,7 @@ export default function RegistrationForm() {
                             error={Boolean(touched.dob && errors.dob)}
                             helperText={touched.dob && errors.dob}
                         />
-                        {formik.values.userTypeID != 1 ?
+                        {/* {formik.values.userTypeID != 1 ?
                             <TextField
                                 select
                                 fullWidth
@@ -223,7 +223,7 @@ export default function RegistrationForm() {
                             >
                                 <MenuItem key={0} value={0}> Select Donation Type</MenuItem>
                                 {generateDonationTypeDropDownMenu(donationTypes)}
-                            </TextField> : null}
+                            </TextField> : null} */}
                     </Stack>
                     <Stack direction={{ xs: 'column', sm: 'row' }} style={{ marginTop: '25px', marginBottom: '25px' }} spacing={3}>
                         <TextField
