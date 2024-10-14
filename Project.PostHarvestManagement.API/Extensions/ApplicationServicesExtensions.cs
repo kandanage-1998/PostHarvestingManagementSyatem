@@ -19,7 +19,8 @@ namespace Project.PostHarvestManagement.API.Extensions
             services.AddTransient<ICollectionPointService, CollectionPointService>();
             services.AddTransient<ICropRegistrationService, CropRegistrationService>();
             services.AddTransient<IFarmerRegistrationService, FarmerRegistrationService>();
-
+            services.AddTransient<ICropService, CropService>(); 
+            services.AddTransient<ICropDemandService, CropDemandService>();
             return services;
         }
     }

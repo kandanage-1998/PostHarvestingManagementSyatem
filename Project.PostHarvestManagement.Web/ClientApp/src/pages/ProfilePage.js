@@ -2,15 +2,13 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import * as Yup from 'yup';
 import { Helmet } from 'react-helmet-async';
-import { Container, Typography, Stack, TextField, Box, Button } from '@mui/material';
+import { Container, Typography, Stack, TextField, Box, Button, Grid, Card, CardContent } from '@mui/material';
 import { useFormik, Form, FormikProvider } from 'formik';
 import { ToastContainer, toast } from 'react-toastify';
 
 export default function DonationRequestAdd() {
-  const [collectionTypes, setCollectionTypes] = useState([]);
-  const [tableData, setTableData] = useState([]);
-  const [weatherData, setWeatherData] = useState(null); // State for weather data
-  const [location, setLocation] = useState(''); // State for location input
+  const [weatherData, setWeatherData] = useState(null);
+  const [location, setLocation] = useState('');
 
   const DonationRequestSchema = Yup.object().shape({
     collectionPointID: Yup.number().min(1, 'Please Select Collection Point').required('Collection Point Required'),
@@ -34,23 +32,13 @@ export default function DonationRequestAdd() {
     },
     validationSchema: DonationRequestSchema,
     onSubmit: (values) => {
-      setTableData([...tableData, values]);
-      formik.resetForm();
+      // Handle form submit
     },
   });
 
   const { errors, touched, handleSubmit, getFieldProps } = formik;
 
-  useEffect(() => {
-    getCollectionPointsForTheDropDown();
-  }, []);
-
-  async function getCollectionPointsForTheDropDown() {
-    const result = await axios.get('https://localhost:7211/api/CollectionPoint/GetCollectionPointsForTheDropDown');
-    setCollectionTypes(result.data.data);
-  }
-
-  async function handleSearchWeather() {
+  const handleSearchWeather = async () => {
     if (!location) {
       toast.error('Please enter a location');
       return;
@@ -63,10 +51,19 @@ export default function DonationRequestAdd() {
     } catch (error) {
       toast.error('Failed to fetch weather data');
     }
-  }
+  };
 
   return (
-    <Box>
+    <Box
+      sx={{
+        backgroundImage: `url(${process.env.PUBLIC_URL + "/assets/farming.jpg"})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        minHeight: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+      }}
+    >
       <Helmet>
         <title> Weather Forecast | PostHarvestManagement </title>
       </Helmet>
@@ -95,24 +92,51 @@ export default function DonationRequestAdd() {
               {/* Show weather data if available */}
               {weatherData && (
                 <Box mt={3}>
-                  <Typography variant="h6">Weather Forecast for {weatherData.location.name}, {weatherData.location.country}</Typography>
-                  <Typography>Temperature: {weatherData.current.tempC} °C</Typography>
-                  <Typography>Condition: {weatherData.current.condition.text}</Typography>
-                  <Typography>Humidity: {weatherData.current.humidity} %</Typography>
-                  <Typography>Wind: {weatherData.current.windKph} kph from {weatherData.current.windDir}</Typography>
-                  <Typography>Pressure: {weatherData.current.pressureMb} mb</Typography>
-                  <Typography>Precipitation: {weatherData.current.precipMm} mm</Typography>
-                  <Typography>Visibility: {weatherData.current.visKm} km</Typography>
-                  <Typography>UV Index: {weatherData.current.uv}</Typography>
+                  <Grid container spacing={3}>
+                    <Grid item xs={12} md={6}>
+                      <Card>
+                        <CardContent>
+                          <Typography variant="h2">{weatherData.current.tempC}°C</Typography>
+                          <Typography variant="h6">{weatherData.current.condition.text}</Typography>
+                          <Typography variant="body2">
+                            Feels like: {weatherData.current.feelslikeC}°C
+                          </Typography>
+                          <Typography variant="body2">Humidity: {weatherData.current.humidity}%</Typography>
+                        </CardContent>
+                      </Card>
+                    </Grid>
+
+                    <Grid item xs={12} md={6}>
+                      <Card>
+                        <CardContent>
+                          <Typography variant="h6">Additional Details</Typography>
+                          <Typography variant="body2">Wind: {weatherData.current.windKph} kph from {weatherData.current.windDir}</Typography>
+                          <Typography variant="body2">Pressure: {weatherData.current.pressureMb} mb</Typography>
+                          <Typography variant="body2">Precipitation: {weatherData.current.precipMm} mm</Typography>
+                          <Typography variant="body2">Visibility: {weatherData.current.visKm} km</Typography>
+                          <Typography variant="body2">UV Index: {weatherData.current.uv}</Typography>
+                        </CardContent>
+                      </Card>
+                    </Grid>
+
+                    <Grid item xs={12} md={6}>
+                      <img
+                        src={process.env.PUBLIC_URL + "/assets/Login.png"}
+                        alt="About"
+                        style={{ width: '100%', borderRadius: 4 }}
+                      />
+                    </Grid>
+                  </Grid>
+
+                  {/* 10-day forecast section can go here if needed */}
                 </Box>
               )}
 
-              {/* Form Fields */}
+              {/* Form Fields (if you have other fields below) */}
               <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-                {/* Other form fields go here */}
+                {/* Your form fields */}
               </Stack>
             </Stack>
-            <br />
           </Form>
         </FormikProvider>
       </Container>

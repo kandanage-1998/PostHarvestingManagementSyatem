@@ -12,6 +12,8 @@ import DashboardAppPage from './pages/DashboardAppPage';
 import Registration from './pages/Registration';
 import ProfilePage from './pages/ProfilePage';
 import DonationRequestAdd from './pages/DonationRequestAdd';
+import CropDemandSupplierWise from './pages/CropDemandSupplierWise';
+import CollectionPointwiseCropDemand from './pages/CollectionPointwiseCropDemand';
 import Loader from './pages/Loader';
 import AboutPage from './pages/AboutPage';
 
@@ -29,6 +31,8 @@ export default function Router() {
         { path: 'blog', element: <BlogPage /> },
         { path: 'profilePage', element: <ProfilePage /> },
         { path: 'donationRequestAdd', element: <DonationRequestAdd /> },
+        { path: 'cropDemandSupplierWise', element: <CropDemandSupplierWise /> },
+        { path: 'CollectionPointwiseCropDemand', element: <CollectionPointwiseCropDemand /> },
         { path: 'about', element: <AboutPage /> }
       ],
     },

@@ -6,7 +6,7 @@ import { Container, Typography, Stack, TextField, Box, Button, MenuItem, Table, 
 import { useFormik, Form, FormikProvider } from 'formik';
 import { ToastContainer, toast } from 'react-toastify';
 
-export default function DonationRequestAdd() {
+export default function CropDemandSupplierWise() {
   const [collectionTypes, setCollectionTypes] = useState([]);
   const [crops, setCrops] = useState([]);
   const [cropData, setCropData] = useState([]);  // State to store the API response
@@ -40,7 +40,8 @@ export default function DonationRequestAdd() {
 
       try {
         // Call the API with the selected parameters
-        const result = await axios.get('https://localhost:7211/api/CropDemand/GetCropDemandCollectionPointWise', model);
+        const result = await axios.post('https://localhost:7211/api/CropDemand/GetCropDemandCollectionPointWise', model);
+        //const result = await axios.post('https://localhost:7211/api/CropDemand/GetCropDemandCollectionPointWise', null, { params: model });
         
         // Check for errors in the response
         if (result.data.statusCode === "Error") {

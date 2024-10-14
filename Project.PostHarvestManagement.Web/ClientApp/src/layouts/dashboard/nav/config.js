@@ -54,13 +54,23 @@ function DashboardNav() {
       icon: icon('ic_heart'),
     },
     {
+      title: 'CropDemandSupplierWise',
+      path: '/dashboard/CropDemandSupplierWise',
+      icon: icon('ic_heart'),
+    },
+    {
+      title: 'CollectionPointwiseCropDemand',
+      path: '/dashboard/CollectionPointwiseCropDemand',
+      icon: icon('ic_heart'),
+    },
+    {
       title: 'About',
       path: '/dashboard/about',
       icon: icon('ic_about'),
     },
   ];
 
-  const donor = [
+  const farmer = [
     {
       title: 'Dashboard',
       path: '/dashboard/app',
@@ -77,7 +87,7 @@ function DashboardNav() {
       icon: icon('ic_blog'),
     },
     {
-      title: 'Profile',
+      title: 'Whether',
       path: '/dashboard/profilePage',
       icon: icon('ic_usergroup'),
     },
@@ -88,7 +98,7 @@ function DashboardNav() {
     },
   ];
 
-  const seeker = [
+  const seller = [
     {
       title: 'dashboard',
       path: '/dashboard/app',
@@ -100,7 +110,7 @@ function DashboardNav() {
       icon: icon('ic_blog'),
     },
     {
-      title: 'Profile',
+      title: 'Whether',
       path: '/dashboard/profilePage',
       icon: icon('ic_usergroup'),
     },
@@ -116,7 +126,7 @@ function DashboardNav() {
     },
   ];
 
-  const exportIlement = userType === 1 ? admin : userType === 2 ? donor : seeker;
+  const exportIlement = userType === 1 ? admin : userType === 2 ? farmer : seller;
 
   return exportIlement;
 }
