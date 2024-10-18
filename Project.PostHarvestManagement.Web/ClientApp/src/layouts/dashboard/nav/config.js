@@ -44,24 +44,29 @@ function DashboardNav() {
       icon: icon('ic_blog'),
     },
     {
-      title: 'Whether',
+      title: 'seller',
+      path: '/dashboard/SellerRegistration',
+      icon: icon('ic_seller'),
+    },
+    {
+      title: 'Weather',
       path: '/dashboard/profilePage',
       icon: icon('ic_usergroup'),
     },
     {
-      title: 'Reports',
+      title: 'Farmer Details',
       path: '/dashboard/donationRequestAdd',
       icon: icon('ic_heart'),
     },
     {
-      title: 'CropDemandSupplierWise',
+      title: 'Crop Demand',
       path: '/dashboard/CropDemandSupplierWise',
-      icon: icon('ic_heart'),
+      icon: icon('ic_crops'),
     },
     {
-      title: 'CollectionPointwiseCropDemand',
+      title: 'Crop Management',
       path: '/dashboard/CollectionPointwiseCropDemand',
-      icon: icon('ic_heart'),
+      icon: icon('ic_demand'),
     },
     {
       title: 'About',
@@ -87,7 +92,7 @@ function DashboardNav() {
       icon: icon('ic_blog'),
     },
     {
-      title: 'Whether',
+      title: 'Weather',
       path: '/dashboard/profilePage',
       icon: icon('ic_usergroup'),
     },
@@ -110,7 +115,7 @@ function DashboardNav() {
       icon: icon('ic_blog'),
     },
     {
-      title: 'Whether',
+      title: 'Weather',
       path: '/dashboard/profilePage',
       icon: icon('ic_usergroup'),
     },

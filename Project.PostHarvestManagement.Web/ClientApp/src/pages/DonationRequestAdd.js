@@ -8,13 +8,13 @@ import { ToastContainer, toast } from 'react-toastify';
 
 export default function DonationRequestAdd() {
   const [collectionTypes, setCollectionTypes] = useState([]);
-  const [crops, setCrops] = useState([]);
+  const [farmers, setFarmers] = useState([]);
   const [cropData, setCropData] = useState([]);  // State to store the API response
 
   // Validation Schema
   const DonationRequestSchema = Yup.object().shape({
     collectionPointID: Yup.number().min(1, 'Please Select Collection Point').required('Collection Point Required'),
-    cropTypeID: Yup.string(),
+    farmerID: Yup.string(),
     startDate: Yup.string().required('Start Date Required'),
     endDate: Yup.string().required('End Date Required'),
   });
@@ -22,7 +22,7 @@ export default function DonationRequestAdd() {
   const formik = useFormik({
     initialValues: {
       collectionPointID: 0,
-      cropTypeID: 0,
+      farmerID: 0,
       startDate: new Date().toISOString().split('T')[0],
       endDate: new Date().toISOString().split('T')[0],
     },
@@ -32,7 +32,7 @@ export default function DonationRequestAdd() {
 
       let model = {
         collectionPointID: values.collectionPointID,
-        cropTypeID: values.cropTypeID === 0 ? null : values.cropTypeID, // handle optional cropTypeID
+        farmerID: values.farmerID === 0 ? null : values.farmerID, // handle optional cropTypeID
         startDate: values.startDate,
         endDate: values.endDate,
       };
@@ -40,8 +40,8 @@ export default function DonationRequestAdd() {
 
       try {
         // Call the API with the selected parameters
-        const result = await axios.get('https://localhost:7211/api/CropDemand/GetCropDemandCollectionPointWise', model);
-        
+        const result = await axios.post('https://localhost:7211/api/FarmerDetails/GetFarmerDetailsCollectionPointWise', model);
+
         // Check for errors in the response
         if (result.data.statusCode === "Error") {
           toast.error(result.data.message);
@@ -63,7 +63,7 @@ export default function DonationRequestAdd() {
 
   useEffect(() => {
     getCollectionPointsForTheDropDown();
-    GetAllCropsForTheDropDown();
+    GetAllFarmesrForTheDropDown();
   }, []);
 
   async function getCollectionPointsForTheDropDown() {
@@ -75,10 +75,11 @@ export default function DonationRequestAdd() {
     }
   }
 
-  async function GetAllCropsForTheDropDown() {
+
+  async function GetAllFarmesrForTheDropDown() {
     try {
-      const result = await axios.get('https://localhost:7211/api/Crop/GetAllCropsForTheDropDown');
-      setCrops(result.data.data);
+      const result = await axios.get('https://localhost:7211/api/Farmer/GetAllFarmersForTheDropDown');
+      setFarmers(result.data.data);
     } catch (error) {
       console.error('Error fetching crops:', error);
     }
@@ -87,11 +88,11 @@ export default function DonationRequestAdd() {
   return (
     <Box>
       <Helmet>
-        <title>Crop Demand Supply Wise | PostHarvestManagement</title>
+        <title>Farmer Details Collection Point Wise | PostHarvestManagement</title>
       </Helmet>
       <Container maxWidth="xl">
         <Typography variant="h4" sx={{ mb: 5 }}>
-          Crop Demand Supply Wise Report
+          Farmer Details Collection Point Wise Report
         </Typography>
         <FormikProvider value={formik}>
           <ToastContainer position="bottom-right" pauseOnHover />
@@ -125,19 +126,19 @@ export default function DonationRequestAdd() {
                   select
                   fullWidth
                   size="small"
-                  label="Crop Name (Optional)"
-                  value={values.cropTypeID}
+                  label="Farmer Name (Optional)"
+                  value={values.farmerID}
                   onChange={formik.handleChange}
-                  {...getFieldProps('cropTypeID')}
-                  error={Boolean(touched.cropTypeID && errors.cropTypeID)}
-                  helperText={touched.cropTypeID && errors.cropTypeID}
+                  {...getFieldProps('farmerID')}
+                  error={Boolean(touched.farmerID && errors.farmerID)}
+                  helperText={touched.farmerID && errors.farmerID}
                 >
                   <MenuItem key={0} value={0}>
-                    Select Crop Name
+                    Select Farmer Name
                   </MenuItem>
-                  {crops.map((item) => (
-                    <MenuItem key={item.cropTypeID} value={item.cropTypeID}>
-                      {item.cropTypeName}
+                  {farmers.map((item) => (
+                    <MenuItem key={item.farmerID} value={item.farmerID}>
+                      {item.farmerName}
                     </MenuItem>
                   ))}
                 </TextField>
@@ -184,10 +185,21 @@ export default function DonationRequestAdd() {
               <Table>
                 <TableHead>
                   <TableRow>
+                    <TableCell>Farmer Name</TableCell>
+                    <TableCell>NIC</TableCell>
+                    <TableCell>TP Number</TableCell>
+                    <TableCell>District</TableCell>
+                    <TableCell>Field Type</TableCell>
+                    <TableCell>Land Extent</TableCell>
+                    <TableCell>Farming Practice</TableCell>
+                    <TableCell>Technologies Used</TableCell>
+                    <TableCell>Irrigation Method</TableCell>
+                    <TableCell>Water Source</TableCell>
                     <TableCell>Crop Type Name</TableCell>
+                    <TableCell>Transport Type</TableCell>
                     <TableCell>Crop Category</TableCell>
                     <TableCell>Harvested Location</TableCell>
-                    <TableCell>Crop Price</TableCell>
+                    <TableCell>Crop Price (Rs.)</TableCell>
                     <TableCell>Collection Point Name</TableCell>
                     <TableCell>Register Number</TableCell>
                     <TableCell>Register Date</TableCell>
@@ -196,10 +208,21 @@ export default function DonationRequestAdd() {
                 <TableBody>
                   {cropData.map((row, index) => (
                     <TableRow key={index}>
+                      <TableCell>{row.farmerName}</TableCell>
+                      <TableCell>{row.nic}</TableCell>
+                      <TableCell>{row.tpNumber}</TableCell>
+                      <TableCell>{row.district}</TableCell>
+                      <TableCell>{row.fieldType}</TableCell>
+                      <TableCell>{row.landExtent}</TableCell>
+                      <TableCell>{row.farmingPractice}</TableCell>
+                      <TableCell>{row.technologiesUsed}</TableCell>
+                      <TableCell>{row.irrigationMethod}</TableCell>
+                      <TableCell>{row.waterSource}</TableCell>
                       <TableCell>{row.cropTypeName}</TableCell>
+                      <TableCell>{row.transportType}</TableCell>
                       <TableCell>{row.cropCategory}</TableCell>
                       <TableCell>{row.harvestedLocation}</TableCell>
-                      <TableCell>{row.cropPrice}</TableCell>
+                      <TableCell>{row.cropPrice.toFixed(2)}</TableCell>
                       <TableCell>{row.collectionPointName}</TableCell>
                       <TableCell>{row.registerNumber}</TableCell>
                       <TableCell>{new Date(row.registerDate).toLocaleDateString()}</TableCell>

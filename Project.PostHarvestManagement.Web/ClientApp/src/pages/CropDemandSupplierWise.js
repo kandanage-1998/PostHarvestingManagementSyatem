@@ -41,7 +41,6 @@ export default function CropDemandSupplierWise() {
       try {
         // Call the API with the selected parameters
         const result = await axios.post('https://localhost:7211/api/CropDemand/GetCropDemandCollectionPointWise', model);
-        //const result = await axios.post('https://localhost:7211/api/CropDemand/GetCropDemandCollectionPointWise', null, { params: model });
         
         // Check for errors in the response
         if (result.data.statusCode === "Error") {
@@ -188,7 +187,7 @@ export default function CropDemandSupplierWise() {
                     <TableCell>Crop Type Name</TableCell>
                     <TableCell>Crop Category</TableCell>
                     <TableCell>Harvested Location</TableCell>
-                    <TableCell>Crop Price</TableCell>
+                    <TableCell>Crop Price (Rs.)</TableCell>
                     <TableCell>Collection Point Name</TableCell>
                     <TableCell>Register Number</TableCell>
                     <TableCell>Register Date</TableCell>
@@ -200,7 +199,7 @@ export default function CropDemandSupplierWise() {
                       <TableCell>{row.cropTypeName}</TableCell>
                       <TableCell>{row.cropCategory}</TableCell>
                       <TableCell>{row.harvestedLocation}</TableCell>
-                      <TableCell>{row.cropPrice}</TableCell>
+                      <TableCell>{row.cropPrice.toFixed(2)}</TableCell>
                       <TableCell>{row.collectionPointName}</TableCell>
                       <TableCell>{row.registerNumber}</TableCell>
                       <TableCell>{new Date(row.registerDate).toLocaleDateString()}</TableCell>

@@ -74,19 +74,19 @@ export default function DashboardAppPage() {
 
         <Grid container spacing={3}>
           <Grid item xs={12} sm={6} md={3}>
-            <AppWidgetSummary title="Total Donors" total={donorLegnth} icon={'ant-design:android-filled'} />
+            <AppWidgetSummary title="Total Crops" total={donorLegnth} icon={'ant-design:android-filled'} />
           </Grid>
 
           <Grid item xs={12} sm={6} md={3}>
-            <AppWidgetSummary title="Total Seekers" total={seekerLegnth} color="info" icon={'ant-design:apple-filled'} />
+            <AppWidgetSummary title="Total Farmers" total={seekerLegnth} color="info" icon={'ant-design:apple-filled'} />
           </Grid>
 
           <Grid item xs={12} sm={6} md={3}>
-            <AppWidgetSummary title="Total Donations" total={1} color="warning" icon={'ant-design:windows-filled'} />
+            <AppWidgetSummary title="Total Collection Points" total={1} color="warning" icon={'ant-design:windows-filled'} />
           </Grid>
 
           <Grid item xs={12} sm={6} md={3}>
-            <AppWidgetSummary title="Donation Types" total={donationTypeLegnth} color="error" icon={'ant-design:bug-filled'} />
+            <AppWidgetSummary title="Total Sellers" total={donationTypeLegnth} color="error" icon={'ant-design:bug-filled'} />
           </Grid>
 
           <Grid item xs={12} md={6} lg={8}>
@@ -94,27 +94,27 @@ export default function DashboardAppPage() {
               title="Website Visits"
               subheader="(+43%) than last year"
               chartLabels={[
-                '01/01/2003',
-                '02/01/2003',
-                '03/01/2003',
-                '04/01/2003',
-                '05/01/2003',
-                '06/01/2003',
-                '07/01/2003',
-                '08/01/2003',
-                '09/01/2003',
-                '10/01/2003',
-                '11/01/2003',
+                '01/10/2024',
+                '02/10/2024',
+                '03/10/2024',
+                '04/10/2024',
+                '05/01/2024',
+                '06/01/2024',
+                '07/01/2024',
+                '08/01/2024',
+                '09/01/2024',
+                '10/01/2024',
+                '11/01/2024',
               ]}
               chartData={[
                 {
-                  name: 'Donors',
+                  name: 'Farmers',
                   type: 'column',
                   fill: 'solid',
                   data: [23, 11, 22, 27, 13, 22, 37, 21, 44, 22, 30],
                 },
                 {
-                  name: 'Seekers',
+                  name: 'Sellers',
                   type: 'area',
                   fill: 'gradient',
                   data: [44, 55, 41, 67, 22, 43, 21, 41, 56, 27, 43],
@@ -127,10 +127,10 @@ export default function DashboardAppPage() {
             <AppCurrentVisits
               title="Current Visits"
               chartData={[
-                { label: 'Uva', value: 10 },
+                { label: 'North Western', value: 10 },
                 { label: 'Western', value: 20 },
                 { label: 'Central', value: 30 },
-                { label: 'Sothern', value: 40 },
+                { label: 'North Central', value: 40 },
               ]}
               chartColors={[
                 theme.palette.primary.main,
@@ -143,37 +143,37 @@ export default function DashboardAppPage() {
 
           <Grid item xs={12} md={6} lg={8}>
             <AppConversionRates
-              title="Conversion Rates"
-              subheader="(+43%) than last year"
+              title="Harvesting Rates "
+              subheader="(+43%) than last month"
               chartData={[
-                { label: 'Italy', value: 400 },
-                { label: 'Japan', value: 430 },
-                { label: 'China', value: 448 },
-                { label: 'Canada', value: 470 },
-                { label: 'France', value: 540 },
-                { label: 'Germany', value: 580 },
-                { label: 'South Korea', value: 690 },
-                { label: 'Netherlands', value: 1100 },
-                { label: 'United States', value: 1200 },
-                { label: 'United Kingdom', value: 1380 },
+                // { label: 'Eastern Province', value: 400 },
+                { label: 'Eastern Province', value: 430 },
+                { label: 'Sabaragamuwa Province', value: 448 },
+                { label: 'Western Province ', value: 470 },
+                { label: 'Southern Province', value: 540 },
+                { label: 'Uva Province', value: 580 },
+                { label: 'Northern Province', value: 690 },
+                { label: 'North Western Province', value: 1100 },
+                { label: 'Central Province', value: 1200 },
+                { label: 'North Central Province', value: 1380 },
               ]}
             />
           </Grid>
 
           <Grid item xs={12} md={6} lg={4}>
             <AppCurrentSubject
-              title="Current donation Types"
-              chartLabels={['Blood', 'Money', 'Kidney', 'Hair']}
+              title="Current Harvesting Types Types"
+              chartLabels={['Farmers', 'Sellers', 'Crops', 'Administration']}
               chartData={[
-                { name: 'March', data: [80, 50, 30, 40] },
-                { name: 'April', data: [20, 30, 40, 80] },
-                { name: 'May', data: [44, 76, 78, 13] },
+                { name: 'Auguest', data: [80, 50, 30, 40] },
+                { name: 'Septhember', data: [20, 30, 40, 80] },
+                { name: 'October', data: [44, 76, 78, 13] },
               ]}
               chartColors={[...Array(6)].map(() => theme.palette.text.secondary)}
             />
           </Grid>
 
-          <Grid item xs={12} md={6} lg={8}>
+          {/* <Grid item xs={12} md={6} lg={8}>
             <AppNewsUpdate
               title="News Update"
               list={[...Array(5)].map((_, index) => ({
@@ -184,9 +184,9 @@ export default function DashboardAppPage() {
                 postedAt: faker.date.recent(),
               }))}
             />
-          </Grid>
+          </Grid> */}
 
-          <Grid item xs={12} md={6} lg={4}>
+          {/* <Grid item xs={12} md={6} lg={4}>
             <AppOrderTimeline
               title="Donation Timeline"
               list={[...Array(5)].map((_, index) => ({
@@ -202,9 +202,9 @@ export default function DashboardAppPage() {
                 time: faker.date.past(),
               }))}
             />
-          </Grid>
+          </Grid> */}
 
-          <Grid item xs={12} md={6} lg={4}>
+          {/* <Grid item xs={12} md={6} lg={4}>
             <AppTrafficBySite
               title="Traffic by Site"
               list={[
@@ -230,9 +230,9 @@ export default function DashboardAppPage() {
                 },
               ]}
             />
-          </Grid>
+          </Grid> */}
 
-          <Grid item xs={12} md={6} lg={8}>
+          {/* <Grid item xs={12} md={6} lg={8}>
             <AppTasks
               title="Tasks"
               list={[
@@ -243,7 +243,7 @@ export default function DashboardAppPage() {
                 { id: '5', label: 'Spread the system around the country' },
               ]}
             />
-          </Grid>
+          </Grid> */}
         </Grid>
       </Container>
     </>
