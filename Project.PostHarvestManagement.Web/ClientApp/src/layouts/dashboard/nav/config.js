@@ -82,14 +82,29 @@ function DashboardNav() {
       icon: icon('ic_analytics'),
     },
     {
-      title: 'Donate',
-      path: '/dashboard/donate',
+      title: 'farmers',
+      path: '/dashboard/user',
+      icon: icon('ic_user'),
+    },
+    {
+      title: 'crops',
+      path: '/dashboard/blog',
+      icon: icon('ic_blog'),
+    },
+    {
+      title: 'Farmer Details',
+      path: '/dashboard/donationRequestAdd',
       icon: icon('ic_heart'),
     },
     {
-      title: 'blog',
-      path: '/dashboard/blog',
-      icon: icon('ic_blog'),
+      title: 'Crop Demand',
+      path: '/dashboard/CropDemandSupplierWise',
+      icon: icon('ic_crops'),
+    },
+    {
+      title: 'Crop Management',
+      path: '/dashboard/CollectionPointwiseCropDemand',
+      icon: icon('ic_demand'),
     },
     {
       title: 'Weather',
@@ -110,19 +125,24 @@ function DashboardNav() {
       icon: icon('ic_analytics'),
     },
     {
-      title: 'blog',
+      title: 'crops',
       path: '/dashboard/blog',
       icon: icon('ic_blog'),
     },
     {
-      title: 'Weather',
-      path: '/dashboard/profilePage',
-      icon: icon('ic_usergroup'),
+      title: 'seller',
+      path: '/dashboard/SellerRegistration',
+      icon: icon('ic_seller'),
     },
     {
-      title: 'Donation Request',
-      path: '/dashboard/donationRequestAdd',
-      icon: icon('ic_heart'),
+      title: 'Crop Demand',
+      path: '/dashboard/CropDemandSupplierWise',
+      icon: icon('ic_crops'),
+    },
+    {
+      title: 'Crop Management',
+      path: '/dashboard/CollectionPointwiseCropDemand',
+      icon: icon('ic_demand'),
     },
     {
       title: 'About',

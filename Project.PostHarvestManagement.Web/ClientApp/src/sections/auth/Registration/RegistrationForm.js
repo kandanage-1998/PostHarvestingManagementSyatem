@@ -209,21 +209,21 @@ export default function RegistrationForm() {
                             error={Boolean(touched.dob && errors.dob)}
                             helperText={touched.dob && errors.dob}
                         />
-                        {/* {formik.values.userTypeID != 1 ?
+                        {formik.values.userTypeID != 1 ?
                             <TextField
                                 select
                                 fullWidth
                                 size="small"
-                                label="Donation Type "
+                                label="User Type "
                                 value={formik.values.donationTypeID}
                                 onChange={formik.handleChange}
                                 {...getFieldProps('donationTypeID')}
                                 error={Boolean(touched.donationTypeID && errors.donationTypeID)}
                                 helperText={touched.donationTypeID && errors.donationTypeID}
                             >
-                                <MenuItem key={0} value={0}> Select Donation Type</MenuItem>
+                                <MenuItem key={0} value={0}> Select User Type</MenuItem>
                                 {generateDonationTypeDropDownMenu(donationTypes)}
-                            </TextField> : null} */}
+                            </TextField> : null}
                     </Stack>
                     <Stack direction={{ xs: 'column', sm: 'row' }} style={{ marginTop: '25px', marginBottom: '25px' }} spacing={3}>
                         <TextField
