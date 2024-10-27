@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import * as Yup from 'yup';
 import { Helmet } from 'react-helmet-async';
+import xlsx from 'json-as-xlsx';
 import { Container, Typography, Stack, TextField, Box, Button, MenuItem, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 import { useFormik, Form, FormikProvider } from 'formik';
 import { ToastContainer, toast } from 'react-toastify';
@@ -9,6 +10,7 @@ import { ToastContainer, toast } from 'react-toastify';
 export default function CollectionPointwiseCropDemand() {
   const [collectionTypes, setCollectionTypes] = useState([]);
   const [crops, setCrops] = useState([]);
+  const [csvHeaders, SetCsvHeaders] = useState([])
   const [cropData, setCropData] = useState([]);  // State to store the API response
 
   // Validation Schema
@@ -40,8 +42,8 @@ export default function CollectionPointwiseCropDemand() {
 
       try {
         // Call the API with the selected parameters
-        const result = await axios.get('https://localhost:7211/api/CropDemand/GetCropDemandCollectionPointWise', model);
-        
+        const result = await axios.post('https://localhost:7211/api/CropManagement/GetCropManagementCollectionPointWise', model);
+
         // Check for errors in the response
         if (result.data.statusCode === "Error") {
           toast.error(result.data.message);
@@ -58,6 +60,53 @@ export default function CollectionPointwiseCropDemand() {
       }
     },
   });
+
+  async function createFile() {
+
+    var file = await createDataForExcel(cropData);
+    var settings = {
+      sheetName: 'Crop Management Report',
+      writeOptions: {}
+    }
+
+    let keys = Object.keys(file[0])
+    let tempcsvHeaders = csvHeaders;
+    keys.map((sitem, i) => {
+      tempcsvHeaders.push({ label: sitem, value: sitem })
+    })
+
+    let dataA = [
+      {
+        sheet: 'Crop Management Report',
+        columns: tempcsvHeaders,
+        content: file
+      }
+    ]
+
+    xlsx(dataA, settings);
+  }
+
+  async function createDataForExcel(array) {
+    var res = [];
+
+    if (array != null) {
+      array.map(x => {
+        var vr = {
+          'Crop Type Name': x.cropTypeName,
+          'Crop Category': x.cropCategory,
+          'Selling Kilos (KG)': x.sellingKilos.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }),
+          'Selling Purpose': x.sellingPurpose,
+          'Crop Remove Purpose': x.cropRemovePurpose,
+          'Crop Price (Rs)': x.cropPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }),
+          'Collection Point Name': x.collectionPointName,
+          'Register Date': new Date(x.registerDate).toLocaleDateString(),
+        }
+        res.push(vr);
+      });
+    }
+    return res;
+  }
+
 
   const { errors, touched, handleSubmit, getFieldProps, values } = formik;
 
@@ -91,7 +140,7 @@ export default function CollectionPointwiseCropDemand() {
       </Helmet>
       <Container maxWidth="xl">
         <Typography variant="h4" sx={{ mb: 5 }}>
-          Crop Demand Supply Wise Report
+          Crop Management Report
         </Typography>
         <FormikProvider value={formik}>
           <ToastContainer position="bottom-right" pauseOnHover />
@@ -186,10 +235,11 @@ export default function CollectionPointwiseCropDemand() {
                   <TableRow>
                     <TableCell>Crop Type Name</TableCell>
                     <TableCell>Crop Category</TableCell>
-                    <TableCell>Harvested Location</TableCell>
-                    <TableCell>Crop Price</TableCell>
+                    <TableCell>Selling Kilos(KG)</TableCell>
+                    <TableCell>Selling Purpose</TableCell>
+                    <TableCell>Crop Remove Purpose</TableCell>
+                    <TableCell>Crop Price(Rs)</TableCell>
                     <TableCell>Collection Point Name</TableCell>
-                    <TableCell>Register Number</TableCell>
                     <TableCell>Register Date</TableCell>
                   </TableRow>
                 </TableHead>
@@ -198,15 +248,30 @@ export default function CollectionPointwiseCropDemand() {
                     <TableRow key={index}>
                       <TableCell>{row.cropTypeName}</TableCell>
                       <TableCell>{row.cropCategory}</TableCell>
-                      <TableCell>{row.harvestedLocation}</TableCell>
+                      <TableCell>{row.sellingKilos}</TableCell>
+                      <TableCell>{row.sellingPurpose}</TableCell>
+                      <TableCell>{row.cropRemovePurpose}</TableCell>
                       <TableCell>{row.cropPrice}</TableCell>
                       <TableCell>{row.collectionPointName}</TableCell>
-                      <TableCell>{row.registerNumber}</TableCell>
                       <TableCell>{new Date(row.registerDate).toLocaleDateString()}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
               </Table>
+              {cropData.length > 0 ?
+                <Box display="flex" justifyContent="flex-end" p={2}>
+                  <Button
+                    color="primary"
+                    id="btnRecord"
+                    type="submit"
+                    variant="contained"
+                    style={{ marginRight: '1rem' }}
+                    //className={classes.colorRecord}
+                    onClick={createFile}
+                  >
+                    EXCEL
+                  </Button>
+                </Box> : null}
             </TableContainer>
           )}
         </Box>

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import * as Yup from 'yup';
+import xlsx from 'json-as-xlsx';
 import { Helmet } from 'react-helmet-async';
 import { Container, Typography, Stack, TextField, Box, Button, MenuItem, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 import { useFormik, Form, FormikProvider } from 'formik';
@@ -9,6 +10,7 @@ import { ToastContainer, toast } from 'react-toastify';
 export default function CropDemandSupplierWise() {
   const [collectionTypes, setCollectionTypes] = useState([]);
   const [crops, setCrops] = useState([]);
+  const [csvHeaders, SetCsvHeaders] = useState([])
   const [cropData, setCropData] = useState([]);  // State to store the API response
 
   // Validation Schema
@@ -41,7 +43,7 @@ export default function CropDemandSupplierWise() {
       try {
         // Call the API with the selected parameters
         const result = await axios.post('https://localhost:7211/api/CropDemand/GetCropDemandCollectionPointWise', model);
-        
+
         // Check for errors in the response
         if (result.data.statusCode === "Error") {
           toast.error(result.data.message);
@@ -58,6 +60,53 @@ export default function CropDemandSupplierWise() {
       }
     },
   });
+
+
+  async function createFile() {
+
+    var file = await createDataForExcel(cropData);
+    var settings = {
+      sheetName: 'Crop Demand Supply Wise Report',
+      writeOptions: {}
+    }
+
+    let keys = Object.keys(file[0])
+    let tempcsvHeaders = csvHeaders;
+    keys.map((sitem, i) => {
+      tempcsvHeaders.push({ label: sitem, value: sitem })
+    })
+
+    let dataA = [
+      {
+        sheet: 'Crop Demand Supply Wise Report',
+        columns: tempcsvHeaders,
+        content: file
+      }
+    ]
+
+    xlsx(dataA, settings);
+  }
+
+  async function createDataForExcel(array) {
+    var res = [];
+
+    if (array != null) {
+      array.map(x => {
+        var vr = {
+          'Crop Type Name': x.cropTypeName,
+          'Crop Category': x.cropCategory,
+          'Harvested Location': x.harvestedLocation,
+          'Crop Price (Rs)': x.cropPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }),
+          'Collection Point Name': x.collectionPointName,
+          'Register Number': x.registerNumber,
+          'Register Date': new Date(x.registerDate).toLocaleDateString(),
+        }
+        res.push(vr);
+      });
+    }
+    return res;
+  }
+
 
   const { errors, touched, handleSubmit, getFieldProps, values } = formik;
 
@@ -207,6 +256,19 @@ export default function CropDemandSupplierWise() {
                   ))}
                 </TableBody>
               </Table>
+              {cropData.length > 0 ?
+                <Box display="flex" justifyContent="flex-end" p={2}>
+                  <Button
+                    color="primary"
+                    id="btnRecord"
+                    type="submit"
+                    variant="contained"
+                    style={{ marginRight: '1rem' }}
+                    onClick={createFile}
+                  >
+                    EXCEL
+                  </Button>
+                </Box> : null}
             </TableContainer>
           )}
         </Box>

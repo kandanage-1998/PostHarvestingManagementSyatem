@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import * as Yup from 'yup';
 import { Helmet } from 'react-helmet-async';
+import xlsx from 'json-as-xlsx';
 import { Container, Typography, Stack, TextField, Box, Button, MenuItem, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 import { useFormik, Form, FormikProvider } from 'formik';
 import { ToastContainer, toast } from 'react-toastify';
@@ -9,6 +10,7 @@ import { ToastContainer, toast } from 'react-toastify';
 export default function DonationRequestAdd() {
   const [collectionTypes, setCollectionTypes] = useState([]);
   const [farmers, setFarmers] = useState([]);
+  const [csvHeaders, SetCsvHeaders] = useState([])
   const [cropData, setCropData] = useState([]);  // State to store the API response
 
   // Validation Schema
@@ -58,6 +60,62 @@ export default function DonationRequestAdd() {
       }
     },
   });
+
+  async function createFile() {
+
+    var file = await createDataForExcel(cropData);
+    var settings = {
+      sheetName: 'Crop Management Report',
+      writeOptions: {}
+    }
+
+    let keys = Object.keys(file[0])
+    let tempcsvHeaders = csvHeaders;
+    keys.map((sitem, i) => {
+      tempcsvHeaders.push({ label: sitem, value: sitem })
+    })
+
+    let dataA = [
+      {
+        sheet: 'Crop Management Report',
+        columns: tempcsvHeaders,
+        content: file
+      }
+    ]
+
+    xlsx(dataA, settings);
+  }
+
+  async function createDataForExcel(array) {
+    var res = [];
+
+    if (array != null) {
+      array.map(x => {
+        var vr = {
+          'Farmer Name': x.farmerName,
+          'NIC Number': x.nic,
+          'Contact Number': x.tpNumber,
+          'District': x.district,
+          'Field Type': x.fieldType,
+          'Land Extent': x.landExtent,
+          'Farming Practice': x.farmingPractice,
+          'Technologies Used': x.technologiesUsed,
+          'Irrigation Method': x.irrigationMethod,
+          'Water Source': x.waterSource,
+          'Transport Type': x.transportType,
+          'Crop Type Name': x.cropTypeName,
+          'Crop Category': x.cropCategory,
+          'Harvested Location': x.harvestedLocation,
+          'Crop Price (Rs)': x.cropPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }),
+          'Collection Point Name': x.collectionPointName,
+          'Register Number': x.registerNumber,
+          'Register Date': new Date(x.registerDate).toLocaleDateString(),
+        }
+        res.push(vr);
+      });
+    }
+    return res;
+  }
 
   const { errors, touched, handleSubmit, getFieldProps, values } = formik;
 
@@ -230,6 +288,19 @@ export default function DonationRequestAdd() {
                   ))}
                 </TableBody>
               </Table>
+              {cropData.length > 0 ?
+                <Box display="flex" justifyContent="flex-end" p={2}>
+                  <Button
+                    color="primary"
+                    id="btnRecord"
+                    type="submit"
+                    variant="contained"
+                    style={{ marginRight: '1rem' }}
+                    onClick={createFile}
+                  >
+                    EXCEL
+                  </Button>
+                </Box> : null}
             </TableContainer>
           )}
         </Box>
